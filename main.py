@@ -6,7 +6,7 @@ FunctSet = 7
 TotalProcess = 10
 ProcessinEachSet = 5
 MaxofFunctionsize = 8192
-MaxProcessLoss = 50
+MaxProcessLoss = 30
 ### memory
 Page_Size = 4096
 Page_Number = 30
@@ -49,7 +49,71 @@ def permute(Index, l, r, func, processlist, processLoss):
 def naive_algorithm(func, processlist, processLoss):
     Index = np.arange(0, FunctSet)
     permute(Index, 0, FunctSet, func, processlist, processLoss)
-    
+ 
+def greedy_algorithm(func, processlist, processLoss):
+    complimentary_list=list()
+    previndex = 0
+    notUnionProcess = list()
+    for i in range(0, len(processlist)):
+        for j in range(0, len(processlist)):
+            if(i == j):
+                continue
+            notUnionProcess.append((i, j, np.setxor1d(processlist[i], processlist[j])))
+    overlaploss = list()
+    for i in notUnionProcess:
+        Loss = 0
+        for j in i[2]:
+            Loss += processLoss[j]
+        overlaploss.append((i[0], i[1], Loss))
+    np.random.shuffle(overlaploss) 
+    minloss = np.iinfo(np.int32).max
+    target = 0
+    ## find the minimum
+    global TotalLoss
+    TotalLoss = 0
+    functionstring = list()
+    #### First round of greedy algorithm.
+    minloss = np.iinfo(np.int32).max
+    print(overlaploss)
+    for i in overlaploss:
+        if(i[2] < minloss):
+            target = i
+            minloss = i[2]
+    TotalLoss +=minloss
+    removeindex = target[0]
+    nextindex = target[1]
+    functionstring.append(removeindex)
+    backuplist = list()
+    for i in overlaploss:
+        if i[0] == removeindex or i[1] == removeindex:
+            continue
+        backuplist.append(i)
+    overlaploss = backuplist
+    #######
+    while(len(functionstring) < FunctSet - 1):  
+        backuplist = list()  
+        for i in overlaploss:
+            if i[0]== nextindex:
+                backuplist.append(i)
+        print(backuplist)
+        minloss = np.iinfo(np.int32).max
+        for i in backuplist:
+            if(i[2] < minloss):
+                target = i
+                minloss = i[2]
+        TotalLoss +=minloss
+        removeindex = target[0]
+        nextindex = target[1]
+        functionstring.append(removeindex)
+        backuplist = list() 
+        for i in overlaploss:
+            if i[0] == removeindex or i[1] == removeindex:
+                continue
+            backuplist.append(i)
+        overlaploss = backuplist
+    functionstring.append(nextindex)
+    print(functionstring)
+    ########
 ##########################    
  # @Func = each function set
  # @Processlist = each function set mapping to the process list
@@ -68,5 +132,6 @@ def data_init():
     return func,processlist, processLoss
 if __name__ == "__main__":
     func, processlist, processLoss = data_init()
-    naive_algorithm(func, processlist, processLoss)
+    #naive_algorithm(func, processlist, processLoss)
+    greedy_algorithm(func, processlist, processLoss)
     print(TotalLoss)
