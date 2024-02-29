@@ -12,6 +12,7 @@ Page_Size = 4096
 Page_Number = 30
 MemorySize = Page_Size * Page_Number
 TotalLoss = np.iinfo(np.int32).max
+TotalLossgreedy = np.iinfo(np.int32).max
 ##########################
 ## iterate all the possible
 
@@ -69,8 +70,8 @@ def greedy_algorithm(func, processlist, processLoss):
     minloss = np.iinfo(np.int32).max
     target = 0
     ## find the minimum
-    global TotalLoss
-    TotalLoss = 0
+    global TotalLossgreedy
+    TotalLossgreedy = 0
     functionstring = list()
     #### First round of greedy algorithm.
     minloss = np.iinfo(np.int32).max
@@ -79,7 +80,7 @@ def greedy_algorithm(func, processlist, processLoss):
         if(i[2] < minloss):
             target = i
             minloss = i[2]
-    TotalLoss +=minloss
+    TotalLossgreedy +=minloss
     removeindex = target[0]
     nextindex = target[1]
     functionstring.append(removeindex)
@@ -101,7 +102,7 @@ def greedy_algorithm(func, processlist, processLoss):
             if(i[2] < minloss):
                 target = i
                 minloss = i[2]
-        TotalLoss +=minloss
+        TotalLossgreedy +=minloss
         removeindex = target[0]
         nextindex = target[1]
         functionstring.append(removeindex)
@@ -132,6 +133,7 @@ def data_init():
     return func,processlist, processLoss
 if __name__ == "__main__":
     func, processlist, processLoss = data_init()
-    #naive_algorithm(func, processlist, processLoss)
+    naive_algorithm(func, processlist, processLoss)
     greedy_algorithm(func, processlist, processLoss)
     print(TotalLoss)
+    print(TotalLossgreedy)
