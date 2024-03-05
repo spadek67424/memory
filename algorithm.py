@@ -6,13 +6,13 @@ FunctSet = 7
 TotalProcess = 10
 ProcessinEachSet = 5
 MaxofFunctionsize = 8192
-MaxProcessLoss = 30
+MaxProcessLoss = 2
 ### memory
 Page_Size = 4096
 Page_Number = 30
 MemorySize = Page_Size * Page_Number
 TotalLoss = np.iinfo(np.int32).max
-TotalLossgreedy = np.iinfo(np.int32).max
+TotalLossgreedy = 0
 ##########################
 ## iterate all the possible
 
