@@ -1,7 +1,6 @@
 import numpy as np
+TotalLossgreedy = 0
 def greedy_algorithm(func, process_list):
-    complimentary_list=list()
-    previndex = 0
     overlaploss = list()
     for i in process_list:
         for j in process_list:
@@ -85,7 +84,6 @@ def readfile():
             apps, libs = left.split("and")
             token = apps.split("{")
             token = token[1].split("}")
-            temp_list = ()
             for process in token[:-1]:
                 if func in process_list.keys():
                     process_list[func].append(str(process))
@@ -97,6 +95,7 @@ if __name__ == "__main__":
     func = readsize() 
     process_list = readfile()
     greedy_algorithm(func, process_list)
+    print(TotalLossgreedy)
     
     
     
