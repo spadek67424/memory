@@ -100,6 +100,7 @@ def greedy_combined_algorithm(func, process_list):
                 if k not in array1:
                     notUnionProcess.append(k)
             overlaploss.append((function_set[i],function_set[j], len(notUnionProcess)))
+    np.random.shuffle(overlaploss)
     print(len(overlaploss))
     minloss = np.iinfo(np.int32).max
     target = 0
@@ -174,7 +175,8 @@ def readfile():
 if __name__ == "__main__":   
     func = readsize() 
     process_list = readfile()
-    #greedy_algorithm(func, process_list)
+    greedy_algorithm(func, process_list)
+    print(TotalLossgreedy)
     greedy_combined_algorithm(func, process_list)
     print(TotalLossgreedy)
     
